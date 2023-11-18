@@ -1,0 +1,28 @@
+{
+  "shodanEnabled": true,
+  "IPs": [
+    "localhost"
+  ],
+  "IPRange": [
+  ],
+  "ports": [
+    2222
+  ],
+  "pingCheck": true,
+  "timeout": 5000,
+  "honeypots": [
+    {
+      "name": "cowrie",
+      "protocol": "tcp",
+      "ports": [
+        2222
+      ],
+      "operations": [
+        {
+          "input": "SSH-11111-OpenSSH_8.0\n\n",
+          "output": "bad version 11111"
+        }
+      ]
+    }
+  ]
+}
