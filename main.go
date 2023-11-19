@@ -56,6 +56,12 @@ func isHoneypot(ip string, port int, config Config) []Result {
 }
 
 func main() {
+	db := initDB()
+	if db == nil {
+		log.Printf("Error initDB")
+		return
+	}
+
 	data, err := os.ReadFile("config.json")
 	if err != nil {
 		log.Printf("Couldn't Read config.json: %s", err)
@@ -72,6 +78,8 @@ func main() {
 	ips := config.IPs
 	ports := config.Ports
 
+	ips = removeExistingEntriesFromArray(db, ips)
+
 	var results []Result
 
 	for _, ip := range ips {
@@ -80,5 +88,8 @@ func main() {
 		}
 	}
 
-	// TODO: put results in DB
+	err = insertResult(db, results)
+	if err != nil {
+		log.Print(err)
+	}
 }
