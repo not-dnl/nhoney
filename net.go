@@ -1,11 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -67,15 +68,25 @@ func sendRequest(conn net.Conn, operation Operation, config Config) error {
 }
 
 func readResponse(conn net.Conn) (string, error) {
-	reader := bufio.NewReader(conn)
+	var response strings.Builder
+	buf := make([]byte, 8192) // 2^13 should be large enough for our purposes
+	for {
+		n, err := conn.Read(buf)
+		if err != nil {
+			if err != io.EOF {
+				return "", err
+			}
+			break
+		}
 
-	response, err := reader.ReadString('\n')
-	if err != nil {
-		log.Printf("Failed to Read the response: %s", err)
-		return "", err
+		response.Write(buf[:n])
+
+		if n < len(buf) {
+			break
+		}
 	}
 
-	log.Printf("Response received: %s", response)
+	log.Printf("Response received: %s", response.String())
 
-	return response, nil
+	return response.String(), nil
 }
