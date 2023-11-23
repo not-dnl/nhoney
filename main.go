@@ -78,7 +78,13 @@ func main() {
 	ips := config.IPs
 	ports := config.Ports
 
+	for _, ipRange := range config.IPRange {
+		ips = append(ips, parseIPs(ipRange)...)
+	}
+
 	ips = removeExistingEntriesFromArray(db, ips)
+
+	log.Printf("Started scan with %d IPs and %d Ports!", len(ips), len(ports))
 
 	var results []Result
 
