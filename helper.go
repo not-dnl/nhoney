@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"github.com/charmbracelet/log"
 	"net"
 	"strings"
 )
@@ -44,7 +44,7 @@ func parseIPs(input string) []string {
 			endIP := net.ParseIP(parts[1])
 
 			if startIP == nil || endIP == nil {
-				log.Printf("Invalid IP range")
+				log.Errorf("Invalid IP range")
 				return nil
 			}
 

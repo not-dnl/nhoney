@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"log"
+	"github.com/charmbracelet/log"
 	"os"
 	"strings"
 )
@@ -17,11 +17,11 @@ func isHoneypot(ip string, port int, config Config) []Result {
 
 		conn := connect(ip, port, honeypot.Protocol, config)
 		if conn == nil {
-			log.Printf("Couldn't connect. IP: %s, Port: %d", ip, port)
+			log.Debugf("Couldn't connect. IP: %s, Port: %d", ip, port)
 			continue
 		}
 
-		log.Printf("Checking for: %s. IP: %s, Port: %d", honeypot.Name, ip, port)
+		log.Debugf("Checking for: %s. IP: %s, Port: %d", honeypot.Name, ip, port)
 
 		for _, operation := range honeypot.Operations {
 			err := sendRequest(conn, operation, config)
@@ -35,7 +35,7 @@ func isHoneypot(ip string, port int, config Config) []Result {
 			}
 
 			if strings.Contains(response, operation.Output) {
-				log.Printf("Operation match! IP: %s, Port: %d, Honey: %s, Response: %s",
+				log.Infof("Operation match! IP: %s, Port: %d, Honey: %s, Response: %s",
 					ip, port, honeypot.Name, response)
 
 				results = append(results, Result{
@@ -58,20 +58,20 @@ func isHoneypot(ip string, port int, config Config) []Result {
 func main() {
 	db := initDB()
 	if db == nil {
-		log.Printf("Error initDB")
+		log.Errorf("Error initDB")
 		return
 	}
 
 	data, err := os.ReadFile("config.json")
 	if err != nil {
-		log.Printf("Couldn't Read config.json: %s", err)
+		log.Errorf("Couldn't Read config.json: %s", err)
 		return
 	}
 
 	var config Config
 	err = json.Unmarshal(data, &config)
 	if err != nil {
-		log.Printf("Error Unmarshaling config.json: %s", err)
+		log.Errorf("Error Unmarshaling config.json: %s", err)
 		return
 	}
 
@@ -84,7 +84,7 @@ func main() {
 
 	ips = removeExistingEntriesFromArray(db, ips)
 
-	log.Printf("Started scan with %d IPs and %d Ports!", len(ips), len(ports))
+	log.Infof("Started scan with %d IPs and %d Ports!", len(ips), len(ports))
 
 	var results []Result
 
@@ -96,6 +96,6 @@ func main() {
 
 	err = insertResult(db, results)
 	if err != nil {
-		log.Print(err)
+		log.Error(err)
 	}
 }

@@ -3,14 +3,14 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"github.com/charmbracelet/log"
 	_ "github.com/mattn/go-sqlite3"
-	"log"
 )
 
 func initDB() *sql.DB {
 	db, err := sql.Open("sqlite3", "./db/db.db")
 	if err != nil {
-		log.Printf("Error Opening DB: %s", err)
+		log.Errorf("Error Opening DB: %s", err)
 		return nil
 	}
 
@@ -25,7 +25,7 @@ func initDB() *sql.DB {
 
 	_, err = db.Exec(createResultsTableSQL)
 	if err != nil {
-		log.Printf("Error Executing query: %s", err)
+		log.Errorf("Error Executing query: %s", err)
 		return nil
 	}
 
@@ -41,7 +41,7 @@ func initDB() *sql.DB {
 
 	_, err = db.Exec(createShodanTableSQL)
 	if err != nil {
-		log.Printf("Error Executing query: %s", err)
+		log.Errorf("Error Executing query: %s", err)
 		return nil
 	}
 

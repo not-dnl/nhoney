@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/charmbracelet/log"
 	"io"
-	"log"
 	"net"
 	"os/exec"
 	"strings"
@@ -20,7 +20,7 @@ func ping(ip string) bool {
 
 func connect(ip string, port int, protocol string, config Config) net.Conn {
 	if protocol != "tcp" {
-		log.Printf("Invalid protocol: %s", protocol)
+		log.Errorf("Invalid protocol: %s", protocol)
 		return nil
 	}
 
@@ -32,11 +32,11 @@ func connect(ip string, port int, protocol string, config Config) net.Conn {
 
 	err = conn.SetDeadline(time.Now().Add(time.Duration(config.Timeout) * time.Millisecond))
 	if err != nil {
-		log.Printf("Failed to set Read-Write-Deadline: %s", err)
+		log.Errorf("Failed to set Read-Write-Deadline: %s", err)
 
 		err := conn.Close()
 		if err != nil {
-			log.Printf("Failed to Close: %s", err)
+			log.Errorf("Failed to Close: %s", err)
 			return nil
 		}
 		return nil
@@ -48,7 +48,7 @@ func connect(ip string, port int, protocol string, config Config) net.Conn {
 func sendRequest(conn net.Conn, operation Operation, config Config) error {
 	err := conn.SetReadDeadline(time.Now().Add(time.Duration(config.Timeout) * time.Millisecond))
 	if err != nil {
-		log.Printf("Failed to set Read-Deadline: %s", err)
+		log.Errorf("Failed to set Read-Deadline: %s", err)
 		return err
 	}
 
@@ -58,11 +58,11 @@ func sendRequest(conn net.Conn, operation Operation, config Config) error {
 
 	_, err = conn.Write(request)
 	if err != nil {
-		log.Printf("Failed to Write the request: %s", err)
+		log.Errorf("Failed to Write the request: %s", err)
 		return err
 	}
 
-	log.Printf("Request sent: %s", operation.Input)
+	log.Debugf("Request sent: %s", operation.Input)
 
 	return nil
 }
@@ -86,7 +86,7 @@ func readResponse(conn net.Conn) (string, error) {
 		}
 	}
 
-	log.Printf("Response received: %s", response.String())
+	log.Debugf("Response received: %s", response.String())
 
 	return response.String(), nil
 }
