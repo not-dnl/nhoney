@@ -58,3 +58,12 @@ func parseIPs(input string) []string {
 
 	return IPs
 }
+
+func arrayContainsString(array []string, str string) bool {
+	for _, s := range array {
+		if s == str {
+			return true
+		}
+	}
+	return false
+}
