@@ -137,6 +137,13 @@ func main() {
 		ips = append(ips, parseIPs(ipRange)...)
 	}
 
+	// Alternative way to add whole IP-Ranges of a Country
+	// WARNING: Slow!
+	/*countryIPRanges := getIPRangesForCountry("RU")
+	for _, ipRange := range countryIPRanges {
+		ips = append(ips, parseIPs(ipRange)...)
+	}*/
+
 	ips = removeExistingEntriesFromArray(db, ips)
 
 	log.Infof("Started scan with %d IPs and %d Ports!", len(ips), len(ports))
