@@ -2,6 +2,7 @@ package main
 
 type Config struct {
 	ShodanEnabled bool       `json:"shodanEnabled"`
+	NmapEnabled   bool       `json:"nmapEnabled"`
 	IPs           []string   `json:"IPs"`
 	IPRange       []string   `json:"IPRange"`
 	Ports         []int      `json:"ports"`

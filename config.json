@@ -1,5 +1,6 @@
 {
   "shodanEnabled": true,
+  "nmapEnabled": false,
   "IPs": [
     "localhost"
   ],

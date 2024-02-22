@@ -67,3 +67,19 @@ func arrayContainsString(array []string, str string) bool {
 	}
 	return false
 }
+
+func concatenateIntArrayUnique(array1 []int, array2 []int) []int {
+	concatenated := append(array1, array2...)
+
+	unique := make(map[int]bool)
+	var result []int
+
+	for _, item := range concatenated {
+		if _, found := unique[item]; !found {
+			unique[item] = true
+			result = append(result, item)
+		}
+	}
+
+	return result
+}

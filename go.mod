@@ -3,6 +3,7 @@ module nhoney
 go 1.20
 
 require (
+	github.com/Ullaakut/nmap/v3 v3.0.3
 	github.com/charmbracelet/log v0.3.1
 	github.com/mattn/go-sqlite3 v1.14.16
 )
@@ -18,5 +19,6 @@ require (
 	github.com/muesli/termenv v0.15.2 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
+	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 )

@@ -14,6 +14,11 @@ func isHoneypot(ip string, port int, config Config) []Result {
 	if !config.PingCheck || ping(ip) {
 		shodan = shodanRequest(ip, config)
 
+		if config.NmapEnabled {
+			nmap := nmapScan(ip)
+			shodan.Ports = concatenateIntArrayUnique(shodan.Ports, nmap)
+		}
+
 		for _, honeypot := range config.Honeypots {
 			if !arrayContainsInt(honeypot.Ports, port) {
 				continue
