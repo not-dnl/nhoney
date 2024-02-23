@@ -5,6 +5,8 @@ import (
 	"github.com/charmbracelet/log"
 	"os"
 	"strings"
+	"sync"
+	"time"
 )
 
 func isHoneypot(ip string, port int, config Config) []Result {
@@ -153,16 +155,43 @@ func main() {
 
 	log.Infof("Started scan with %d IPs and %d Ports!", len(ips), len(ports))
 
-	var results []Result
+	scanStart := time.Now()
+
+	var wg sync.WaitGroup
+	resultsCh := make(chan []Result)
+	errCh := make(chan error)
 
 	for _, ip := range ips {
 		for _, port := range ports {
-			results = append(results, isHoneypot(ip, port, config)...)
+			wg.Add(1)
+			go func(ip string, port int) {
+				defer wg.Done()
+				resultsCh <- isHoneypot(ip, port, config)
+			}(ip, port)
 		}
 	}
 
-	err = insertResult(db, results)
-	if err != nil {
-		log.Error(err)
+	go func() {
+		wg.Wait()
+		close(resultsCh)
+	}()
+
+	var results []Result
+	for res := range resultsCh {
+		results = append(results, res...)
+	}
+
+	scanEnd := time.Since(scanStart)
+	log.Infof("Scan took %s ... Inserting to DB\n", scanEnd)
+
+	go func() {
+		errCh <- insertResult(db, results)
+	}()
+
+	select {
+	case err := <-errCh:
+		if err != nil {
+			log.Error(err)
+		}
 	}
 }
