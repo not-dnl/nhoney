@@ -118,6 +118,8 @@ func isHoneypot(ip string, port int, config Config) []Result {
 }
 
 func main() {
+	// log.SetLevel(log.DebugLevel)
+
 	db := initDB()
 	if db == nil {
 		log.Errorf("Error initDB")

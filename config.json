@@ -2,12 +2,21 @@
   "shodanEnabled": true,
   "nmapEnabled": false,
   "IPs": [
-    "localhost"
   ],
   "IPRange": [
   ],
   "ports": [
-    2222
+    2222,
+    22,
+    21,
+    2121,
+    25,
+    6379,
+    80,
+    88,
+    8080,
+    8888,
+    443
   ],
   "pingCheck": true,
   "timeout": 5000,
@@ -16,12 +25,133 @@
       "name": "cowrie",
       "protocol": "tcp",
       "ports": [
-        2222
+        2222,
+        22
       ],
       "operations": [
         {
-          "input": "SSH-11111-OpenSSH_8.0\n\n",
+          "input": "SSH-11111-OpenSSH_8.0\n",
           "output": "bad version 11111"
+        }
+      ]
+    },
+    {
+      "name": "SSHTroll",
+      "protocol": "tcp",
+      "ports": [
+        22
+      ],
+      "operations": [
+        {
+          "input": "",
+          "output": "SSHTroll"
+        }
+      ]
+    },
+    {
+      "name": "dionaea-ftp",
+      "protocol": "tcp",
+      "ports": [
+        21
+      ],
+      "operations": [
+        {
+          "input": "",
+          "output": "220"
+        },
+        {
+          "input": "USER anonymous\r\n",
+          "output": "331"
+        },
+        {
+          "input": "PASS anon@anon.com\r\n",
+          "output": "230"
+        },
+        {
+          "input": "HELP\r\n",
+          "output": "502"
+        },
+        {
+          "input": "FEAT\r\n",
+          "output": "211-Features:\r\n PASV\r\n PORT\r\n211 End\r\n"
+        }
+      ]
+    },
+    {
+      "name": "BearFTP",
+      "protocol": "tcp",
+      "ports": [
+        21
+      ],
+      "operations": [
+        {
+          "input": "",
+          "output": "220"
+        },
+        {
+          "input": "krughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdjkrughfdj",
+          "output": "Input line is too long; login aborted."
+        }
+      ]
+    },
+    {
+      "name": "FTPHoney",
+      "protocol": "tcp",
+      "ports": [
+        2121,
+        21
+      ],
+      "operations": [
+        {
+          "input": "",
+          "output": "220 (vsFTPd "
+        },
+        {
+          "input": " \r\n",
+          "output": "500"
+        }
+      ]
+    },
+    {
+      "name": "mailoney",
+      "protocol": "tcp",
+      "ports": [
+        25
+      ],
+      "operations": [
+        {
+          "input": "HELP\r\n",
+          "output": "502 Error: command"
+        }
+      ]
+    },
+    {
+      "name": "beehive-redis",
+      "protocol": "tcp",
+      "ports": [
+        6379
+      ],
+      "operations": [
+        {
+          "input": "DBSIZE",
+          "output": "-ERR unknown command "
+        }
+      ]
+    },
+    {
+      "name": "confluence",
+      "protocol": "tcp",
+      "ports": [
+        80,
+        88,
+        8080,
+        8888,
+        443
+      ],
+      "operations": [
+        {
+          "input": "",
+          "output": "145DF9C4CDE560B2699212"
         }
       ]
     }
