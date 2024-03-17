@@ -152,6 +152,7 @@ func main() {
 	}*/
 
 	ips = removeExistingEntriesFromArray(db, ips)
+	ips = shuffleStringArray(ips) // shuffle them, so we don't flood the same ip-range and potentially get banned that way
 
 	log.Infof("Started scan with %d IPs and %d Ports!", len(ips), len(ports))
 

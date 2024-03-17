@@ -2,8 +2,10 @@ package main
 
 import (
 	"github.com/charmbracelet/log"
+	"math/rand"
 	"net"
 	"strings"
+	"time"
 )
 
 func arrayContainsInt(arr []int, target int) bool {
@@ -82,4 +84,14 @@ func concatenateIntArrayUnique(array1 []int, array2 []int) []int {
 	}
 
 	return result
+}
+
+func shuffleStringArray(arr []string) []string {
+	rand.Seed(time.Now().UnixNano())
+
+	for i := len(arr) - 1; i > 0; i-- {
+		j := rand.Intn(i + 1)
+		arr[i], arr[j] = arr[j], arr[i]
+	}
+	return arr
 }
