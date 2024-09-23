@@ -14,5 +14,5 @@ A signature based Honeypot detector written in Golang
 * Shuffles IPs to not flood the same IP-Range
 
 ### TODO
-*[ ] More signatures
-*[ ] Frontend
+* [ ] More signatures
+* [ ] Frontend
